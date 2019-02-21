@@ -26,6 +26,8 @@ type OfxTransactionList struct {
 	Transactions     []OfxTransaction `xml:"BANKMSGSRSV1>STMTTRNRS>STMTRS>BANKTRANLIST>STMTTRN"`
 }
 
+// WriteOFX creates an XML document from a OfxTransactionList, and writes it to
+// the Writer passed in as an argument
 func (txs *OfxTransactionList) WriteOFX(w io.Writer) {
 	header := `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?OFX OFXHEADER="200" VERSION="211" SECURITY="NONE" OLDFILEUID="NONE" NEWFILEUID="NONE"?>
@@ -52,6 +54,7 @@ type OfxTransaction struct {
 	PayeeAccountType string   `xml:"BANKACCTTO>ACCTTYPE"`
 }
 
+// ToOfx converts a single bank transaction (BankTransaction) to a single OfxTransaction
 func (btx *BankTransaction) ToOfx() OfxTransaction {
 	var otx OfxTransaction
 	otx.Type = btx.TxType
